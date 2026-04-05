@@ -4,6 +4,8 @@ A production-quality Task Management System built with Node.js/Express (backend)
 
 ---
 
+Hosted URL: https://task-management-pied-alpha.vercel.app
+
 ## Tech Stack
 
 **Backend**
