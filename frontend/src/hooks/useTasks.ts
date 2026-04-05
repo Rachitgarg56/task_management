@@ -74,7 +74,7 @@ export function useTasks(initialParams: GetTasksParams = {}) {
     const label = task.status === 'completed' ? 'Task completed! 🎉' : 'Task reopened';
     toast.success(label);
     setTasks((prev) => prev.map((t) => (t.id === id ? task : t)));
-    return task;
+    // return task;
   }, []);
 
   const refresh = useCallback(() => fetchTasks(params), [fetchTasks, params]);
