@@ -1,0 +1,162 @@
+### TaskFlow API — REST Client Test File
+### Use with VS Code REST Client extension or IntelliJ HTTP Client
+### Set @baseUrl and update @accessToken / @refreshToken after login
+
+@baseUrl = http://localhost:5000/api/v1
+@accessToken = PASTE_ACCESS_TOKEN_HERE
+@refreshToken = PASTE_REFRESH_TOKEN_HERE
+
+###############################################
+# HEALTH CHECK
+###############################################
+
+### Health
+GET http://localhost:5000/health
+
+###############################################
+# AUTH
+###############################################
+
+### Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### Refresh token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###############################################
+# TASKS
+###############################################
+
+### Get all tasks (paginated)
+GET {{baseUrl}}/tasks?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Get tasks — filter by status
+GET {{baseUrl}}/tasks?status=pending
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Get tasks — search by title
+GET {{baseUrl}}/tasks?search=meeting
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Get tasks — combined query
+GET {{baseUrl}}/tasks?page=1&limit=5&status=pending&search=deploy
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Create task
+POST {{baseUrl}}/tasks
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "Finish the backend API",
+  "description": "Complete all CRUD endpoints with proper validation and error handling."
+}
+
+###
+
+### Create minimal task (no description)
+POST {{baseUrl}}/tasks
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "Quick task"
+}
+
+###
+
+### Get task by ID (replace 1 with actual ID)
+GET {{baseUrl}}/tasks/1
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Update task
+PATCH {{baseUrl}}/tasks/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "Updated task title",
+  "description": "Updated description here."
+}
+
+###
+
+### Toggle task completion
+PATCH {{baseUrl}}/tasks/1/toggle
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Delete task
+DELETE {{baseUrl}}/tasks/1
+Authorization: Bearer {{accessToken}}
+
+###############################################
+# VALIDATION ERROR EXAMPLES
+###############################################
+
+### Register — missing fields
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "notanemail",
+  "password": "123"
+}
+
+###
+
+### Create task — empty title
+POST {{baseUrl}}/tasks
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": ""
+}
